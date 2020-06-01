@@ -14,8 +14,31 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ProductRepository extends ServiceEntityRepository
 {
+    private $entityManager;
+
     public function __construct(ManagerRegistry $registry)
     {
+        $this->entityManager = $registry->getManager();
         parent::__construct($registry, Product::class);
+    }
+
+    /**
+     * Save or Update a Product in DB
+    */
+    public function saveProduct(Product $product)
+    {
+        $this->entityManager->persist($product);
+        $this->entityManager->flush();
+
+        return $product->getId();
+    }
+
+    /**
+     * Delete a Product in DB
+    */
+    public function deleteProduct(Product $product)
+    {
+        $this->entityManager->remove($product);
+        $this->entityManager->flush();
     }
 }
