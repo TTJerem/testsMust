@@ -2,25 +2,27 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\AnnotationsasRest;
+use App\Entity\Product;
 
-class ProductController extends AbstractController
+class ProductController extends FOSRestController
 {
     /**
      *.Get a single product by id
      * @Route("/products/{id}", name="product_get")
      * @Method({"GET"})
      */
-    public function getAction()
+    public function getAction(int $id)
     {
-        //Get one product in repose
+        //Get one product in repos with the request parameter
         $product = $this->getDoctrine()
         ->getRepository(Product::class)
-        ->find();
+        ->findById($id);
 
         if($product) {
             $data = $this->get('serializer')->serialize($product, 'json');
@@ -30,7 +32,7 @@ class ProductController extends AbstractController
             return $response;
 
         } else {
-            return new Response("Try again !", Response::HTTP_NOT_FOUND);
+            return new Response("Not found, Try again !", Response::HTTP_NOT_FOUND);
         }
     }
 
@@ -47,7 +49,7 @@ class ProductController extends AbstractController
         ->findAll();
         $data = $this->get('serializer')->serialize($products, 'json');
 
-        $response = new Response($products);
+        $response = new Response($data);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
@@ -58,7 +60,7 @@ class ProductController extends AbstractController
      * @Route("/products", name="product_create")
      * @Method({"POST"})
      */
-    public function createAction(Request $request)
+    /*public function createAction(Request $request)
     {
         $data = $request->getContent();
         $article = $this->get('serializer')->deserialize($data, 'App\Entity\Product', 'json');
@@ -66,14 +68,14 @@ class ProductController extends AbstractController
         //Persist in repository
 
         return new Response('', Response::HTTP_CREATED);
-    }
+    }*/
 
     /**
      *.Delete a product
      * @Route("/products/{id}", name="product_get")
      * @Method({"DELETE"})
      */
-    public function deleteAction()
+    /*public function deleteAction()
     {
         //Get one product in repose
         $product = null;
@@ -83,14 +85,14 @@ class ProductController extends AbstractController
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
-    }
+    }*/
 
     /**
      *.Update a product
      * @Route("/products/{id}", name="product_get")
      * @Method({"PUT"})
      */
-    public function updateAction()
+    /*public function updateAction()
     {
         //Update an existing product
         $product = null;
@@ -100,5 +102,5 @@ class ProductController extends AbstractController
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
-    }
+    }*/
 }
