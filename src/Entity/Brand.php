@@ -7,12 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=BrandRepository::class)
+ * @ORM\Table(name="brand")
  */
 class Brand
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -20,5 +21,16 @@ class Brand
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     */
+    private $name;
+
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 }
