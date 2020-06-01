@@ -68,6 +68,21 @@ class Product
     }
 
     /**
-      TODO add brand and categories
-    */
+     * @ORM\OneToOne(targetEntity="Brand", cascade={"persist"})
+     * @ORM\JoinColumn(name="brand_id", referencedColumnName="id", nullable=true)
+     */
+    private $brand;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Category")
+     * @ORM\JoinTable(name="products_categories",
+     *      joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")}
+     *      )
+     */
+    private $categories;
+
+    public function __construct() {
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 }
