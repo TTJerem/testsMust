@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends AbstractController
 {
@@ -44,7 +47,7 @@ class ProductController extends AbstractController
         ->findAll();
         $data = $this->get('serializer')->serialize($products, 'json');
 
-        $response = new Response($data);
+        $response = new Response($products);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;

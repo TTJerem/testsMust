@@ -62,7 +62,7 @@ class Product
      */
     private $active;
 
-    public function isActive(): ?boolean
+    public function isActive()
     {
         return $this->active;
     }
